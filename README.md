@@ -29,7 +29,7 @@ Q-Optima turns real decisions (delivery routes in Odisha, NSE stock portfolios, 
 
 ## Run it
 
-**1. In your browser (no installation):** click **Open in Colab** above, then **Runtime → Run all** (about 5 minutes).
+**1. In your browser (no installation):** click **Open in Colab** above, then **Runtime → Run all** (about 2–4 minutes).
 
 **2. On your computer:**
 
@@ -123,7 +123,7 @@ qoptima/
   benchmark.py       cli.py
 docs/THEORY.md       formulas, diagrams, references      docs/images/   generated figures
 notebooks/           interactive Colab notebook (+ build_notebook.py that generates it)
-tests/               31 tests (run in GitHub Actions on every push)
+tests/               31 tests (run by GitHub Actions on pushes to main and on pull requests)
 ```
 
 ## Roadmap
