@@ -27,7 +27,7 @@ md(f"""
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)]({COLAB}) · [GitHub repository]({REPO}) · [Theory & formulas]({REPO}/blob/main/docs/THEORY.md)
 
-**How to use:** click **Runtime → Run all** (about 4–6 minutes), or run cells one at a time with **Shift+Enter**. Cells marked 🎛️ have sliders you can play with.
+**How to use:** click **Runtime → Run all** (about 2–4 minutes), or run cells one at a time with **Shift+Enter**. Cells marked 🎛️ have sliders you can play with.
 
 | Part | What you'll see |
 |---|---|
@@ -150,7 +150,7 @@ print(f"{route.n} places -> {rq.n} qubits; {2**rq.n:,} possible bitstrings, "
 code("""
 best = route.held_karp()
 sa = solve_annealing(rq)
-qa = solve_qaoa(rq, p=2, restarts=3)          # ~20 s on the 16-qubit simulator
+qa = solve_qaoa(rq, p=2, restarts=3)          # ~5–10 s on the 16-qubit simulator
 for name, bits in [("Classical exact (Held-Karp)", best.bits), ("Simulated annealing", sa.bits), ("QAOA (simulated)", qa.bits)]:
     tour, km = (list(bits), route.tour_length(list(bits))) if name.startswith("Classical") else route.decode(bits)
     print(f"{name:28s}: {route.describe(tour)}  ({km:.1f} km)" if tour else f"{name}: infeasible")
@@ -420,7 +420,7 @@ viz.plot_warm_start(rows); plt.show()
 md("""
 ---
 ## Part K: Full benchmark and infographic
-Every problem, every method, checked against the proven optimum (about 1–2 minutes).
+Every problem, every method, checked against the proven optimum (under a minute).
 """)
 code("""
 from qoptima import benchmark
@@ -470,7 +470,7 @@ The repository is set up for **Claude Code** (in VS Code or the terminal):
 
 - `CLAUDE.md` tells Claude the commands, conventions and honesty rules.
 - Custom slash commands in `.claude/commands/`: `/run-demo`, `/benchmark`, `/figures`, `/add-problem`, `/explain`.
-- GitHub Actions re-runs the tests on every push.
+- GitHub Actions re-runs the tests on every push to `main` and on every pull request.
 
 Typical loop on your computer:
 ```bash

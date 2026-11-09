@@ -11,9 +11,9 @@ real data, and learned (transferred) QAOA angles.
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"            # first time (extras: qiskit, data = yfinance, notebook = ipywidgets)
-pytest -q                          # 31 tests, ~6 s; run after every change
-python -m qoptima benchmark        # ~60 s; regenerates results/benchmark.md + .csv
-python -m qoptima figures          # ~30 s; regenerates docs/images/*.png + stats.json
+pytest -q                          # 31 tests, ~2 s; run after every change
+python -m qoptima benchmark        # ~15 s; regenerates results/benchmark.md + .csv
+python -m qoptima figures          # ~15 s; regenerates docs/images/*.png + stats.json
 python -m qoptima route --places examples/places.csv
 python -m qoptima portfolio --prices examples/prices_synthetic.csv --k 3
 python -m qoptima plots --buyers examples/buyers.csv --plots examples/plots.csv
@@ -47,7 +47,8 @@ Slash commands (in `.claude/commands/`): `/run-demo`, `/benchmark`, `/figures`,
 - `notebooks/q_optima_colab.ipynb`: interactive Colab notebook. It is generated: edit
   `notebooks/build_notebook.py` and run it, don't hand-edit the JSON. It must work with only
   Colab's preinstalled packages plus `yfinance`, and it clones the repo and uses `sys.path`.
-- `.github/workflows/tests.yml`: CI runs pytest + a quick benchmark on Python 3.10 and 3.12
+- `.github/workflows/tests.yml`: CI runs pytest, a quick benchmark and a quick figure render on
+  Python 3.10 and 3.12 for pushes to `main` and for pull requests
 
 ## Conventions (keep these)
 
