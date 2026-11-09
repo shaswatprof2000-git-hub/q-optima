@@ -37,6 +37,12 @@ class RoutingProblem:
         return cls(names, d)
 
     @classmethod
+    def from_matrix(cls, names: list[str], dist) -> "RoutingProblem":
+        """Use real distances, e.g. from datasets.road_distance_matrix()."""
+        d = np.asarray(dist, dtype=float)
+        return cls(list(names), (d + d.T) / 2)  # symmetrise one-way differences
+
+    @classmethod
     def random(cls, n: int, seed: int = 0):
         rng = np.random.default_rng(seed)
         pts = rng.uniform(0, 20, (n, 2))
