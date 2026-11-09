@@ -1,5 +1,10 @@
 # Q-Optima
 
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaswatprof2000-git-hub/q-optima/blob/main/notebooks/q_optima_colab.ipynb)
+[![tests](https://github.com/shaswatprof2000-git-hub/q-optima/actions/workflows/tests.yml/badge.svg)](https://github.com/shaswatprof2000-git-hub/q-optima/actions/workflows/tests.yml)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
 **Hybrid quantum-classical optimisation for real problems, with an honest benchmark.**
 
 Q-Optima turns everyday decisions into QUBO problems (the input format of quantum
@@ -22,10 +27,19 @@ Every result is checked against the proven optimum, so you can see where each me
 | `portfolio` | Pick *k* of *N* stocks, balancing return against risk (mean-variance) | N |
 | `plot_matching` | Match real-estate buyers to plots by budget, size, facing, road width, corner | buyers × plots |
 
-## Quick start
+## Run it
+
+### Option 1: in your browser (no installation)
+
+Click **Open in Colab** above, then **Runtime → Run all**. The notebook clones this repo, runs the tests,
+solves all three problems, plots the route and shows what QAOA actually does. It ends with an optional
+step for real IBM quantum hardware.
+
+### Option 2: on your computer
 
 ```bash
-git clone https://github.com/<you>/q-optima && cd q-optima
+git clone https://github.com/shaswatprof2000-git-hub/q-optima && cd q-optima
+python3 -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"          # numpy, scipy, pandas, pytest
 pytest -q                        # 11 tests
 
@@ -34,6 +48,12 @@ python -m qoptima route --places examples/places.csv
 python -m qoptima plots --buyers examples/buyers.csv --plots examples/plots.csv
 python -m qoptima portfolio --prices examples/prices_synthetic.csv --k 3
 ```
+
+Use your own data by editing the CSVs in `examples/` (same columns).
+
+### Automatic checks
+
+Every push runs the tests on Python 3.10 and 3.12 with GitHub Actions. The **tests** badge above shows the result.
 
 Example output (`route`, 5 places, 16 qubits):
 
@@ -95,6 +115,7 @@ qoptima/
   problems/               routing, portfolio, plot_matching
   benchmark.py, cli.py
 examples/                 sample CSVs (illustrative data only)
+notebooks/                Google Colab notebook
 results/                  generated benchmark tables
 tests/
 ```
