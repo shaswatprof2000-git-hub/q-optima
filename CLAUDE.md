@@ -25,6 +25,8 @@ python -m qoptima plots --buyers examples/buyers.csv --plots examples/plots.csv
   Qiskit/IBM, still untested on real hardware)
 - `qoptima/problems/`: plug-ins `routing.py`, `portfolio.py`, `plot_matching.py`
 - `qoptima/benchmark.py`, `qoptima/cli.py`
+- `notebooks/q_optima_colab.ipynb`: Colab demo. It clones the repo and uses `sys.path`, so keep it working with only Colab's preinstalled packages
+- `.github/workflows/tests.yml`: CI runs pytest on Python 3.10 and 3.12 for every push
 
 ## Conventions (keep these)
 
