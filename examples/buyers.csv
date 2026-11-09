@@ -1,0 +1,4 @@
+name,budget_lakh,min_area_sqft,preferred_facing,min_road_ft,wants_corner
+Mr. Das,40,1500,East|North,30,False
+Ms. Patnaik,55,1800,East,30,True
+Mr. Sahoo,32,1200,North|West,20,False

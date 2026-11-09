@@ -1,0 +1,5 @@
+plot_id,area_sqft,price_lakh,facing,road_width_ft,corner
+A-12,1500,37.5,East,30,False
+A-14,1800,46.0,North,30,True
+B-03,1200,29.0,West,20,False
+B-07,2400,62.0,East,40,True
