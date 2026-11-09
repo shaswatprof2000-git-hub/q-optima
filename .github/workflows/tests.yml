@@ -11,6 +11,8 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10", "3.12"]
+    env:
+      MPLBACKEND: Agg
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -22,3 +24,5 @@ jobs:
         run: pytest -q
       - name: Quick benchmark
         run: python -m qoptima benchmark --quick --out /tmp/bench
+      - name: Figures render
+        run: python -m qoptima figures --quick --out /tmp/figs

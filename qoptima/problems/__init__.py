@@ -1,3 +1,4 @@
+from .maxcut import MaxCutProblem
 from .plot_matching import Buyer, Plot, PlotMatchingProblem
 from .portfolio import PortfolioProblem
 from .routing import RoutingProblem
@@ -11,5 +12,5 @@ BBSR_CUTTACK_STOPS = {
     "Khandagiri": (20.2560, 85.7790),
 }
 
-__all__ = ["RoutingProblem", "PortfolioProblem", "PlotMatchingProblem", "Buyer", "Plot",
-           "BBSR_CUTTACK_STOPS"]
+__all__ = ["RoutingProblem", "PortfolioProblem", "PlotMatchingProblem", "MaxCutProblem", "Buyer",
+           "Plot", "BBSR_CUTTACK_STOPS"]

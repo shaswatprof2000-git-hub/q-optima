@@ -12,10 +12,13 @@ from pathlib import Path
 
 import pandas as pd
 
-from .problems import BBSR_CUTTACK_STOPS, PlotMatchingProblem, PortfolioProblem, RoutingProblem
+from .datasets import real_graph
+from .problems import BBSR_CUTTACK_STOPS, MaxCutProblem, PlotMatchingProblem, PortfolioProblem, RoutingProblem
 from .solvers import solve_annealing, solve_exact, solve_qaoa
+from .solvers.noise import NoiseModel
 
 QAOA_MAX_QUBITS = 16
+NOISY_MAX_QUBITS = 12   # the noisy run retrains QAOA, so keep it to the quicker instances
 
 
 @dataclass
@@ -39,6 +42,8 @@ def default_instances(quick: bool = False) -> list[Instance]:
             Instance("routing", "5 stops (BBSR-Cuttack)", RoutingProblem.from_latlon(BBSR_CUTTACK_STOPS), "min", "km"),
             Instance("portfolio", "12 stocks, pick 4", PortfolioProblem.synthetic(12, 4, seed=11), "min", "objective"),
             Instance("plot_matching", "4 buyers x 4 plots", PlotMatchingProblem.sample(4, 4, seed=5), "max", "fit score"),
+            Instance("maxcut", "Florentine families network (real data)",
+                     MaxCutProblem.from_networkx(*real_graph("florentine")), "max", "links cut"),
         ]
     return inst
 
@@ -49,6 +54,8 @@ def _classical(inst: Instance):
         return [p.held_karp(), p.nearest_neighbour_2opt()]
     if inst.family == "portfolio":
         return [p.brute_force(), p.greedy()]
+    if inst.family == "maxcut":
+        return [p.brute_force(), p.local_search()]
     return [p.hungarian()]
 
 
@@ -62,6 +69,8 @@ def run(quick: bool = False, out_dir: str | Path = "results", seed: int = 0, ver
         quantum_style = [solve_exact(qubo), solve_annealing(qubo, seed=seed)]
         if qubo.n <= QAOA_MAX_QUBITS:
             quantum_style.append(solve_qaoa(qubo, p=2, restarts=3, seed=seed))
+        if qubo.n <= NOISY_MAX_QUBITS:
+            quantum_style.append(solve_qaoa(qubo, p=2, restarts=3, seed=seed, noise=NoiseModel()))
 
         for r in quantum_style:
             _, value = p.decode(r.bits)
@@ -92,6 +101,8 @@ def _row(inst, qubits, solver, value, optimum, runtime, info):
     if "prob_optimal" in info:
         note = (f"p={info['p']}; P(optimal)={info['prob_optimal']:.3f} "
                 f"({info['amplification']:.0f}x random guessing)")
+        if info.get("noise"):
+            note += f"; noisy sampling, circuit fidelity {info['circuit_fidelity']:.2f}"
     return {
         "problem": inst.family, "instance": inst.label, "qubits": qubits, "solver": solver,
         "value": None if value is None else round(value, 4), "unit": inst.unit,
@@ -122,7 +133,8 @@ def to_markdown(df: pd.DataFrame) -> str:
 
 def _honest_summary(df: pd.DataFrame) -> list[str]:
     out = []
-    for solver, label in [("qaoa", "QAOA (simulated)"), ("simulated_annealing", "Simulated annealing")]:
+    for solver, label in [("qaoa", "QAOA (simulated, noiseless)"), ("qaoa_noisy", "QAOA with gate & readout noise"),
+                          ("simulated_annealing", "Simulated annealing")]:
         g = df[df.solver == solver]
         if g.empty:
             continue
